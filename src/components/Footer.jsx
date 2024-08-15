@@ -22,6 +22,23 @@ const Footer=()=>{
          options={ThemeOpsn}
          menuPlacement="top"
          defaultValue={{label: theme.label, value:theme}}
+         styles={{
+            control: (base) => ({
+                ...base,
+                backgroundColor: theme.background,
+            }),
+            menu: (base) => ({
+                ...base,
+                backgroundColor: theme.background,
+            }),
+            option: (base, { isFocused }) => ({
+                ...base,
+                backgroundColor: isFocused ? theme.textColor : theme.background,
+                color: isFocused ? theme.background : theme.textColor,
+                cursor: 'pointer',
+            }),
+        }}
+        
         />
  
            </div>
