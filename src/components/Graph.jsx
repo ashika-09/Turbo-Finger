@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTheme } from '../context/ThemeContext';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -21,24 +22,21 @@ ChartJS.register(
    Legend,
 );
 
-const Graph= ()=>{
+const Graph= ({graphdata})=>{
+    const {theme}=useTheme();
  return (
     <>
     <Line
       data={
         {
-            labels :[1,2,3,4],
+            labels :graphdata.map(i=>i[0]),
             datasets: [
                 {
-                         data:[1,2,3,4],
-                         label:'graph',
-                         borderColor: 'red'
+                         data:graphdata.map(i=>i[1]),
+                         label:'wpm',
+                         borderColor: theme.textColor
                 },
-                {
-                       data: [5,,6,7,8],
-                       label:'graph',
-                       borderColor:'green'
-                }
+               
             ]
         }
       }

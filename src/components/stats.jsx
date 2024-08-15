@@ -1,5 +1,6 @@
 import React from 'react'
 import Graph from './Graph';
+
 const Stats = (
     {
         wpm,
@@ -7,8 +8,18 @@ const Stats = (
         correctchars,
         incorrectchars,
         extrachar,
-        missedchar
+        missedchar,
+        graphdata
     } )=> {
+
+    let timeSet= new Set();
+    const newgraph = graphdata.filter(i=>{
+        if(!timeSet.has(i[0])){
+            timeSet.add(i[0]);
+            return i;
+        }
+    });
+   
     return (
         <div className="stats-box">
           <div className="left-stats">
@@ -21,7 +32,7 @@ const Stats = (
           </div>
 
           <div className='right-stats'>
-            <Graph/>
+            <Graph graphdata={newgraph}/>
           </div>
         </div>
     )

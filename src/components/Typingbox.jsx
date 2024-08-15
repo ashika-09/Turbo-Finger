@@ -3,7 +3,7 @@ import { generate } from 'random-words';
 import UpperMenu from './UpperMenu';
 import Stats from './stats';
 import { useTestMode } from '../context/TestModeContext';
-
+import Header from './Header';
 const Typingbox = () => {
   const [wordsArray, setwordsArray] = useState(() => {
     return generate(50); // Use the `generate` function to get random words
@@ -22,17 +22,12 @@ const Typingbox = () => {
   const [extrachars, setextrachars] = useState(0);
   const [missedchars, setmissedchars] = useState(0);
   const [correctwords, setcorrectwords] = useState(0);
+  const [graphdata , setgraphdata] = useState([]);
 
   const wordsSpanRef = useMemo(() => {
     return Array(wordsArray.length).fill(0).map(i => createRef(null));
   }, [wordsArray]);
 
-  useEffect(() => {
-    // Cleanup function to clear interval when component unmounts
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [intervalId]);
 
 
   const StartTimer = () => {
@@ -42,6 +37,17 @@ const Typingbox = () => {
 
     function timer() {
       setcountDown((latestcountDown) => {
+           setcorrectchar((correctchar)=>{
+            setgraphdata((graphdata)=>{
+              return [...graphdata , [
+                TestTime-latestcountDown+1,
+                (correctchar/5)/((TestTime-latestcountDown+1)/60)
+              ]];
+            })
+            return correctchar;
+           })
+
+        
         if (latestcountDown === 1) {
           settestEnd(true);
           clearInterval(intervalId);
@@ -174,15 +180,21 @@ const Typingbox = () => {
   const focusInput = () => {
     inputRef.current.focus();
   }
+  useEffect(()=>{
+    setcountDown(TestTime);
+  }, [TestTime])
 
+  useEffect(() => {
+    // Cleanup function to clear interval when component unmounts
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [intervalId]);
 
   useEffect(() => {
     focusInput();
     wordsSpanRef[0].current.childNodes[0].className = 'current'
-
-    // StartTimer();
-    // resetTest();
-  }, [TestTime])
+  }, [])
 
 
 
@@ -191,11 +203,12 @@ const Typingbox = () => {
       <UpperMenu countDown={countDown} />
       {(testEnd) ? (<Stats
        wpm={calculateWPM()} 
-       accuracy={calculateAcc} 
+       accuracy={calculateAcc()} 
        correctchars={correctchar}
        incorrectchars={incorrectchar}
        missedchar={missedchars}
        extrachar={extrachars}
+       graphdata={graphdata}
        />) : (<div className='type-box' onClick={focusInput}>
         <div className='words'>
           {wordsArray.map((word, index) => (

@@ -2,8 +2,7 @@ import React from 'react';
 import { useTestMode } from '../context/TestModeContext';
 
 
-const UpperMenu = ({countDown}) => {
-   // const { TestTime } = useTestMode();
+const UpperMenu = ({ countDown }) => {
     const { setTestTime } = useTestMode();
 
     const updateTime = (event) => {
@@ -11,7 +10,7 @@ const UpperMenu = ({countDown}) => {
     }
 
 
-   
+
 
     return (
         <div className='upper-menu'>

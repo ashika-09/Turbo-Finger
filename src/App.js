@@ -4,6 +4,7 @@ import UpperMenu from "./components/UpperMenu";
 import Footer from "./components/Footer";
 import { ThemeProvider } from "styled-components";
 import { useTheme } from "./context/ThemeContext" ;
+import Header from "./components/Header";
 
 function App() {
   const { theme } = useTheme();
@@ -11,7 +12,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className="canvas">
         <GlobalStyles />
-        <div>header</div>
+        <Header/>
         <Typingbox />
         <Footer />
       </div>
