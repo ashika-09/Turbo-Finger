@@ -1,6 +1,7 @@
 import React, { createRef, useState, useEffect, useMemo, useRef } from 'react';
 import { generate } from 'random-words';
 import UpperMenu from './UpperMenu';
+import Stats from './stats';
 import { useTestMode } from '../context/TestModeContext';
 
 const Typingbox = () => {
@@ -16,11 +17,11 @@ const Typingbox = () => {
   const [intervalId, setintervalId] = useState(null);
   const [currentwordIndex, setcurrentwordIndex] = useState(0);
   const [currentcharIndex, setcurrentcharIndex] = useState(0);
-  const [correctchar, setcorrectchar]=useState(0);
-  const [incorrectchar, setincorrectchar]=useState(0);
-  const [extrachars, setextrachars]=useState(0);
-  const [missedchars , setmissedchars]=useState(0);
-  const [correctwords , setcorrectwords]=useState(0);
+  const [correctchar, setcorrectchar] = useState(0);
+  const [incorrectchar, setincorrectchar] = useState(0);
+  const [extrachars, setextrachars] = useState(0);
+  const [missedchars, setmissedchars] = useState(0);
+  const [correctwords, setcorrectwords] = useState(0);
 
   const wordsSpanRef = useMemo(() => {
     return Array(wordsArray.length).fill(0).map(i => createRef(null));
@@ -84,11 +85,11 @@ const Typingbox = () => {
 
     if (event.keyCode === 32) {//for space
 
-       let correctcharsinwords= wordsSpanRef[currentwordIndex].current.querySelectorAll('.correct')
-        
-       if(correctcharsinwords.length === allcurrChars.length){
-          setcorrectwords(correctwords+1);
-        }
+      let correctcharsinwords = wordsSpanRef[currentwordIndex].current.querySelectorAll('.correct')
+
+      if (correctcharsinwords.length === allcurrChars.length) {
+        setcorrectwords(correctwords + 1);
+      }
 
 
       if (allcurrChars.length <= currentcharIndex) {
@@ -140,18 +141,18 @@ const Typingbox = () => {
       allcurrChars[currentcharIndex - 1].classList.remove('current-right');
       wordsSpanRef[currentwordIndex].current.append(newSpan);
       setcurrentcharIndex(currentcharIndex + 1);
-      setextrachars(extrachars+1);
+      setextrachars(extrachars + 1);
       return;
 
     }
 
     if (event.key === allcurrChars[currentcharIndex].innerText) {
       allcurrChars[currentcharIndex].className = 'correct';
-      setcorrectchar(correctchar+1);
+      setcorrectchar(correctchar + 1);
     }
     else {
       allcurrChars[currentcharIndex].className = 'incorrect';
-      setincorrectchar(incorrectchar+1);
+      setincorrectchar(incorrectchar + 1);
     }
 
     if (currentcharIndex + 1 === allcurrChars.length) {
@@ -163,12 +164,12 @@ const Typingbox = () => {
     setcurrentcharIndex(currentcharIndex + 1);
   }
 
-  const calculateWPM=()=>{
-    return Math.round((correctchar/5)/(TestTime/60));
+  const calculateWPM = () => {
+    return Math.round((correctchar / 5) / (TestTime / 60));
   }
 
-  const calculateAcc=()=>{
-     return Math.round((correctwords/currentwordIndex)*100);
+  const calculateAcc = () => {
+    return Math.round((correctwords / currentwordIndex) * 100);
   }
   const focusInput = () => {
     inputRef.current.focus();
@@ -188,7 +189,14 @@ const Typingbox = () => {
   return (
     <div>
       <UpperMenu countDown={countDown} />
-      {(testEnd) ? (<h1>Test Over</h1>) : (<div className='type-box' onClick={focusInput}>
+      {(testEnd) ? (<Stats
+       wpm={calculateWPM()} 
+       accuracy={calculateAcc} 
+       correctchars={correctchar}
+       incorrectchars={incorrectchar}
+       missedchar={missedchars}
+       extrachar={extrachars}
+       />) : (<div className='type-box' onClick={focusInput}>
         <div className='words'>
           {wordsArray.map((word, index) => (
             <span className='word' ref={wordsSpanRef[index]}>

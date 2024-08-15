@@ -1,15 +1,15 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 
-export const GlobalStyles=createGlobalStyle`
+export const GlobalStyles = createGlobalStyle`
  
 *{
   box-sizing: border-box;
 }
 
 body{
- background: ${({theme})=>theme.background};
- color: ${({theme})=>theme.textColor};
+ background: ${({ theme }) => theme.background};
+ color: ${({ theme }) => theme.textColor};
  margin:0;
  padding:0;
  transition:all 0.25s linear;
@@ -40,7 +40,7 @@ body{
        font-size:25px;
        display:flex;
        flex-wrap:wrap;
-       color: ${({theme})=>theme.typeBoxText}
+       color: ${({ theme }) => theme.typeBoxText}
   }
   .word{
     margin:5px;
@@ -73,11 +73,11 @@ body{
     animation:blinking 2s infinite;
     animation-timing-function:ease;
     @keyframes blinking{
-     0%{border-left-color:${({theme})=>theme.textColor}}
-     25%{border-left-color:${({theme})=>theme.background}}
-     50%{border-left-color:${({theme})=>theme.textColor}}
-     75%{border-left-color:${({theme})=>theme.background}}
-     100%{border-left-color:${({theme})=>theme.textColor}}
+     0%{border-left-color:${({ theme }) => theme.textColor}}
+     25%{border-left-color:${({ theme }) => theme.background}}
+     50%{border-left-color:${({ theme }) => theme.textColor}}
+     75%{border-left-color:${({ theme }) => theme.background}}
+     100%{border-left-color:${({ theme }) => theme.textColor}}
       }
     }
 
@@ -86,16 +86,16 @@ body{
     animation:blinkingright 2s infinite;
     animation-timing-function:ease;
     @keyframes blinkingright{
-     0%{border-right-color:${({theme})=>theme.textColor}}
-     25%{borderright-color:${({theme})=>theme.background}}
-     50%{border-right-color:${({theme})=>theme.textColor}}
-     75%{border-right-color:${({theme})=>theme.background}}
-     100%{border-right-color:${({theme})=>theme.textColor}}
+     0%{border-right-color:${({ theme }) => theme.textColor}}
+     25%{borderright-color:${({ theme }) => theme.background}}
+     50%{border-right-color:${({ theme }) => theme.textColor}}
+     75%{border-right-color:${({ theme }) => theme.background}}
+     100%{border-right-color:${({ theme }) => theme.textColor}}
       }
     }
 
       .correct{
-        color:${({theme})=>theme.textColor};
+        color:${({ theme }) => theme.textColor};
           }
         .incorrect{
         color:red;
@@ -107,4 +107,28 @@ body{
         justify-content: space-between;
         margin: auto;
         }
+
+   .stats-box{
+       display:flex;
+       wodth:1000px;
+       height:auto;
+       margin-left:auto;
+       margin-right:auto;
+   }     
+    .left-stats{
+    width:30%;
+    padding: 30px;
+    }
+
+    .right-stats{
+     width:70%
+    }
+     .title{
+       font-size:20px;
+       color:${({ theme }) => theme.typeBoxText};
+     }
+       .subtitle{
+         font-size:30px;
+       }
+        
 `
