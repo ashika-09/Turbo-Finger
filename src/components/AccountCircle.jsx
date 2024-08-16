@@ -2,10 +2,14 @@ import React from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Modal, Tab, Tabs } from '@mui/material';
 import { useState } from "react";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import { useTheme } from "../context/ThemeContext";
 
 const AccountCircle = () => {
     const [open, setopen] = useState(false);
     const [value, setvalue] = useState(0);
+    const {theme} = useTheme();
 
     const handleModalOpen = () => {
         setopen(true);
@@ -37,13 +41,13 @@ const AccountCircle = () => {
                         <Tabs variant="fullWidth" value={value}
                             onChange={handlevalueChange}
                         >
-                            <Tab label='login'></Tab>
-                            <Tab label='SignUp'></Tab>
+                            <Tab label='login' style={{color:theme.textColor}}></Tab>
+                            <Tab label='SignUp' style={{color:theme.textColor}}></Tab>
                         </Tabs>
                     </AppBar>
-                    {value === 0 && <h1>Login form</h1>}
-                    {value === 1 && <h1>SignUp form</h1>}
-                    
+                    {value === 0 && <LoginForm/>}
+                    {value === 1 && <SignupForm/>}
+
                 </div>
             </Modal>
         </div>
