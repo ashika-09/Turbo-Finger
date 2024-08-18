@@ -24,6 +24,22 @@ const Stats = (
     });
    
     const pushDatatodb=()=>{
+
+     if(isNaN(accuracy)){
+      toast.error('Invalid test', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+        return;
+     }
+
       const resultsRef= db.collection('Result');
       const { uid }=auth.currentUser;
       resultsRef.add({
