@@ -28,9 +28,10 @@ const AccountCircle = () => {
         setvalue(value);
     }
 
-    const googleProvider= new GoogleAuthProvider();
+    
 
     const handleGoogleSingin=()=>{
+        const googleProvider= new GoogleAuthProvider();
         signInWithPopup(auth, googleProvider).then((res)=>{
             toast.success('Google Loggin Successful', {
                 position: "top-center",
@@ -57,6 +58,8 @@ const AccountCircle = () => {
                 transition: Bounce,
                 });
         })
+
+       
     }
 
     return (

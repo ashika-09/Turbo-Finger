@@ -5,7 +5,6 @@ import { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { toast , Bounce , ToastContainer } from "react-toastify";
 import errorMapping from "../utils/errorMapping";
-
 const LoginForm=()=>{
 
     const [email , setemail]=useState('');

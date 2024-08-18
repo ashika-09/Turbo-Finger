@@ -2,7 +2,7 @@ import { Box, Button, TextField } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { auth } from '../firebaseConfig';
+import { auth , createUserWithEmailAndPassword } from '../firebaseConfig';
 import { toast , Bounce } from "react-toastify";
 import errorMapping from "../utils/errorMapping";
 
