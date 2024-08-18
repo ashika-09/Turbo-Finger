@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { auth } from '../firebaseConfig';
 import { toast , Bounce } from "react-toastify";
+import errorMapping from "../utils/errorMapping";
 
 const SignupForm=()=>{
 
@@ -55,7 +56,7 @@ const SignupForm=()=>{
                 transition: Bounce,
                 });
         }).catch((err)=>{
-            toast.error('Not able to create user', {
+            toast.error(errorMapping[err.code] || 'some error occured', {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,

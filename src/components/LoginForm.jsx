@@ -4,6 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { toast , Bounce , ToastContainer } from "react-toastify";
+import errorMapping from "../utils/errorMapping";
 
 const LoginForm=()=>{
 
@@ -41,7 +42,7 @@ const LoginForm=()=>{
             transition: Bounce,
             });
          }).catch((err)=>{
-          toast.error('Invalid Credentials', {
+          toast.error(errorMapping[err.code] || 'some error occured', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
