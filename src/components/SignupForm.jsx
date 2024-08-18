@@ -2,6 +2,8 @@ import { Box, Button, TextField } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
+import { auth } from '../firebaseConfig';
+import { toast , Bounce } from "react-toastify";
 
 const SignupForm=()=>{
 
@@ -9,6 +11,64 @@ const SignupForm=()=>{
     const [password , setpassword]=useState('');
     const [confirmPassword , setconfirmPassword]=useState('');
     const {theme}=useTheme();
+
+    const handleSubmit=()=>{
+        if(!email || !password || !confirmPassword){
+            toast.warning('Please fill all the details', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+            return;
+        }
+        if(password !== confirmPassword){
+            toast.warning('Password Mismatched', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+            return;
+        }
+
+        auth.createUserWithEmailAndPassword(email, password).then((res)=>{
+            toast.success('User Created', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+        }).catch((err)=>{
+            toast.error('Not able to create user', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+        });
+    }
+
     return (
         <Box
           p={3}
@@ -69,7 +129,8 @@ const SignupForm=()=>{
             variant='contained'
             size='large'
             style={{backgroundColor: theme.textColor , color: theme.background}}
-          >SignUp</Button>
+            onClick={handleSubmit}
+         >SignUp</Button>
         </Box>
     )
 }
