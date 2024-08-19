@@ -10,12 +10,16 @@ import { signInWithPopup , GoogleAuthProvider}  from 'firebase/auth'
 import errorMapping from "../utils/errorMapping";
 import { toast , Bounce , ToastContainer } from "react-toastify";
 import { auth } from "../firebaseConfig";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AccountCircle = () => {
     const [open, setopen] = useState(false);
     const [value, setvalue] = useState(0);
     const { theme } = useTheme();
 
+    const [user]=useAuthState(auth);
+  
     const handleModalOpen = () => {
         setopen(true);
     }
@@ -28,7 +32,34 @@ const AccountCircle = () => {
         setvalue(value);
     }
 
-    
+    const Logout=()=>{
+        auth.signOut().then((res)=>{
+            toast.success('Logged Out', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce
+            })
+        }).catch((err)=>{
+            
+            toast.error('not able to logout', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+        })
+    }
 
     const handleGoogleSingin=()=>{
         const googleProvider= new GoogleAuthProvider();
@@ -65,6 +96,7 @@ const AccountCircle = () => {
     return (
         <div>
             <AccountCircleIcon onClick={handleModalOpen} />
+             {user && <LogoutIcon onClick={Logout}/>}
             <Modal open={open}
                 onClose={handleClose}
                 style={{
