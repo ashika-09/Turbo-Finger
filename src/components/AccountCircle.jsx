@@ -12,16 +12,27 @@ import { toast , Bounce , ToastContainer } from "react-toastify";
 import { auth } from "../firebaseConfig";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from "react-router-dom";
 
 const AccountCircle = () => {
     const [open, setopen] = useState(false);
     const [value, setvalue] = useState(0);
     const { theme } = useTheme();
 
+    const navigate = useNavigate();
+
     const [user]=useAuthState(auth);
   
+
     const handleModalOpen = () => {
-        setopen(true);
+        if(user){
+            //navigate to the user page
+            navigate('/user');
+        }
+        else{
+            setopen(true);
+        }
+       
     }
 
     const handleClose = () => {
@@ -116,8 +127,8 @@ const AccountCircle = () => {
                             <Tab label='SignUp' style={{ color: theme.textColor }}></Tab>
                         </Tabs>
                     </AppBar>
-                    {value === 0 && <LoginForm />}
-                    {value === 1 && <SignupForm />}
+                    {value === 0 && <LoginForm handleClose={handleClose} />}
+                    {value === 1 && <SignupForm handleClose={handleClose} />}
                     <Box
                         display="flex"
                         flexDirection="column"

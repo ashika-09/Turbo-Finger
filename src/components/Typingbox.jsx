@@ -4,6 +4,8 @@ import UpperMenu from './UpperMenu';
 import Stats from './stats';
 import { useTestMode } from '../context/TestModeContext';
 import Header from './Header';
+
+
 const Typingbox = () => {
   const [wordsArray, setwordsArray] = useState(() => {
     return generate(50); // Use the `generate` function to get random words

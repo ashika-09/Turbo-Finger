@@ -6,7 +6,7 @@ import { auth , createUserWithEmailAndPassword } from '../firebaseConfig';
 import { toast , Bounce } from "react-toastify";
 import errorMapping from "../utils/errorMapping";
 
-const SignupForm=()=>{
+const SignupForm=({handleClose})=>{
 
     const [email , setemail]=useState('');
     const [password , setpassword]=useState('');
@@ -55,6 +55,7 @@ const SignupForm=()=>{
                 theme: "dark",
                 transition: Bounce,
                 });
+                handleClose();
         }).catch((err)=>{
             toast.error(errorMapping[err.code] || 'some error occured', {
                 position: "top-center",

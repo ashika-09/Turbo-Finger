@@ -45,7 +45,7 @@ const Stats = (
       resultsRef.add({
         wpm:wpm,
         accuracy:accuracy,
-        timestpam:new Date(),
+        TimeStamp:new Date(),
         characters: `${correctchars}/${incorrectchars}/${missedchar}/${extrachar}`,
         userid:uid
       }).then((res)=>{

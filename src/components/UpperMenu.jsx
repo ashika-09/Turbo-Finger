@@ -15,7 +15,7 @@ const UpperMenu = ({ countDown }) => {
     return (
         <div className='upper-menu'>
             <div className="counter">
-                <h>{countDown}</h>
+                <h3>{countDown}</h3>
             </div>
             <div className="modes">
                 <div className="time-mode" id={15} onClick={updateTime}>15s</div>

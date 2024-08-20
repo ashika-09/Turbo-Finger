@@ -5,7 +5,10 @@ import { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { toast , Bounce , ToastContainer } from "react-toastify";
 import errorMapping from "../utils/errorMapping";
-const LoginForm=()=>{
+
+
+
+const LoginForm=({handleClose})=>{
 
     const [email , setemail]=useState('');
     const [password , setpassword]=useState('');
@@ -40,6 +43,7 @@ const LoginForm=()=>{
             theme: "dark",
             transition: Bounce,
             });
+            handleClose();
          }).catch((err)=>{
           toast.error(errorMapping[err.code] || 'some error occured', {
             position: "top-center",
