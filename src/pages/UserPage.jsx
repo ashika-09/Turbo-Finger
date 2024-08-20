@@ -47,10 +47,25 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import TableforuserData from "../components/TableforuserData";
+import Graph from "../components/Graph";
+
 const UserPage = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [graphData, setGraphData] = useState([]);
     const navigate = useNavigate();
+
+    const formatDate = (TimeStamp) => {
+        console.log('Timestamp:', TimeStamp); // Check the structure
+        if (TimeStamp && TimeStamp.toDate instanceof Function) {
+            return TimeStamp.toDate().toLocaleString();
+        } 
+        if (TimeStamp && TimeStamp.seconds) {
+            return new Date(TimeStamp.seconds * 1000 + TimeStamp.nanoseconds / 1000000).toLocaleString();
+        }
+        return "Date not available";
+        console.log(data);
+    };
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -67,23 +82,37 @@ const UserPage = () => {
                     if (snapshot.empty) {
                         console.log('No matching documents.');
                         setData([]);
+                        setGraphData([]); // Ensure graphData is also cleared
                     } else {
                         const results = snapshot.docs.map((doc) => ({
                             ...doc.data()
-                           
-                        }))
-                         setData(results);
+                            // return {
+                            //     ...data,
+                            //     TimeStamp: data.TimeStamp ? data.TimeStamp.toDate() : new Date(), // Ensure TimeStamp is a Date object
+                            // };
+                        }));
+
+                        // Process data for graph
+                        const tempGraphData = results.map((item) => [
+                            formatDate(item.TimeStamp), 
+                            item.wpm
+                        ]);
+
+                        setData(results);
+                        setGraphData(tempGraphData);
                         console.log('Fetched results:', results);
                     }
                 } catch (error) {
                     console.error('Error fetching user data:', error);
                     setData([]);
+                    setGraphData([]); // Ensure graphData is cleared on error
                 } finally {
                     setLoading(false);
                 }
             } else {
                 console.log('No user is currently logged in.');
                 setData([]);
+                setGraphData([]); // Ensure graphData is cleared when no user is logged in
                 navigate('/');
                 setLoading(false);
             }
@@ -91,29 +120,18 @@ const UserPage = () => {
 
         // Clean up subscription on unmount
         return () => unsubscribe();
-    }, []);
+    }, [navigate]);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div>
             <h1>User Page</h1>
-            {/* {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <div>
-                    {data.length > 0 ? (
-                        <ul>
-                            {data.map((item, index) => (
-                                <li key={index}>{JSON.stringify(item)}</li>
-                            ))}
-                        </ul>
-                    ) :
-                        // <p>No data found</p> 
-                        <p></p>
-                    }
-                </div>
-            )} */}
             <div className="canvas">
-                <TableforuserData data={data}/>
+                <Graph graphdata={graphData} />
+                <TableforuserData data={data} />
             </div>
         </div>
     );
