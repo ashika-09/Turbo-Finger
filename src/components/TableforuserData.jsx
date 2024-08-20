@@ -19,7 +19,7 @@ const TableforuserData = ({ data }) => {
     
     const cellstyle={color: theme.textColor, textAlign: 'center' }
     return (
-        <div className="Table">
+        <div className="table">
             <TableContainer>
                 <Table>
                     <TableHead>

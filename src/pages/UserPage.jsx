@@ -48,6 +48,8 @@ import { auth, db } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import TableforuserData from "../components/TableforuserData";
 import Graph from "../components/Graph";
+import UserInfo from "../components/UserInfo";
+
 
 const UserPage = () => {
     const [data, setData] = useState([]);
@@ -58,14 +60,15 @@ const UserPage = () => {
     const formatDate = (TimeStamp) => {
         console.log('Timestamp:', TimeStamp); // Check the structure
         if (TimeStamp && TimeStamp.toDate instanceof Function) {
-            return TimeStamp.toDate().toLocaleString();
-        } 
+            return TimeStamp.toDate().toLocaleDateString();
+        }
         if (TimeStamp && TimeStamp.seconds) {
             return new Date(TimeStamp.seconds * 1000 + TimeStamp.nanoseconds / 1000000).toLocaleString();
         }
         return "Date not available";
         console.log(data);
     };
+
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -75,7 +78,8 @@ const UserPage = () => {
 
                 try {
                     const resultRef = db.collection("Result");
-                    const snapshot = await resultRef.where('userid', '==', uid).get();
+                    const snapshot = await resultRef.where('userid', '==', uid)
+                        .orderBy('TimeStamp', 'desc').get();
 
                     console.log('Query snapshot:', snapshot.empty ? 'No documents' : snapshot.docs.map(doc => doc.data()));
 
@@ -92,14 +96,15 @@ const UserPage = () => {
                             // };
                         }));
 
+                        // results.sort((a, b) => b.TimeStamp - a.TimeStamp);
                         // Process data for graph
                         const tempGraphData = results.map((item) => [
-                            formatDate(item.TimeStamp), 
+                            formatDate(item.TimeStamp),
                             item.wpm
                         ]);
 
                         setData(results);
-                        setGraphData(tempGraphData);
+                        setGraphData(tempGraphData.reverse());
                         console.log('Fetched results:', results);
                     }
                 } catch (error) {
@@ -123,14 +128,19 @@ const UserPage = () => {
     }, [navigate]);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <div className="center-of-screen"><p  size={300}>Loading...</p></div>
+        
     }
 
     return (
         <div>
-            <h1>User Page</h1>
+          
             <div className="canvas">
-                <Graph graphdata={graphData} />
+                <UserInfo totaltesttaken={data.length} />
+                <div className="graph-user-page">
+                    <Graph graphdata={graphData} />
+                </div>
+
                 <TableforuserData data={data} />
             </div>
         </div>
